@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ST mate는 학사 일정과 학습 시간을 한곳에서 관리하는 데스크톱 앱입니다."
+    />
+    <title>ST mate — 나만의 학습 플래너</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main id="login-screen" class="screen login-screen">
+      <div class="login-topbar">
+        <a class="brand" href="#" aria-label="ST mate 홈">
+          <img class="brand-logo" src="assets/st-mate-logo.png" alt="" />
+          <span>ST mate</span>
+        </a>
+      </div>
+
+      <section class="login-content" aria-labelledby="login-title">
+        <div class="login-visual" aria-hidden="true">
+          <img class="login-illustration" src="assets/star-login-illustration.png" alt="" />
+        </div>
+
+        <div class="login-panel">
+          <h1 id="login-title">로그인</h1>
+
+          <form id="login-form" class="login-form">
+            <label for="student-id">학번</label>
+            <input
+              id="student-id"
+              name="studentId"
+              type="text"
+              inputmode="numeric"
+              autocomplete="username"
+              placeholder="아이디를 입력해 주세요"
+              required
+            />
+
+            <label for="password">eClass 비밀번호</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="비밀번호를 입력해 주세요"
+              required
+            />
+
+            <p id="login-message" class="login-message" role="status" aria-live="polite"></p>
+            <button class="primary-button login-submit" type="submit">
+              로그인
+              <span aria-hidden="true">→</span>
+            </button>
+          </form>
+          <p class="login-footnote">계정 정보는 인증 요청에만 사용되며 저장되지 않습니다.</p>
+        </div>
+      </section>
+      <footer class="login-footer">© 2026 ST mate.</footer>
+    </main>
+
+    <div id="app-screen" class="screen app-screen is-hidden">
+      <aside class="sidebar">
+        <a class="brand sidebar-brand" href="#" aria-label="ST mate 홈">
+          <img class="brand-logo" src="assets/st-mate-logo.png" alt="" />
+          <span>ST mate</span>
+        </a>
+        <nav class="sidebar-nav" aria-label="주 메뉴">
+          <p class="nav-group-title">OVERVIEW</p>
+          <button class="nav-item active" type="button" data-page="home" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">⌂</span>
+            <span>홈</span>
+          </button>
+
+          <p class="nav-group-title">학사 관리</p>
+          <button class="nav-item" type="button" data-page="courses">
+            <span class="nav-icon" aria-hidden="true"><img src="assets/course-icon.png" alt="" /></span>
+            <span>수강 과목</span>
+          </button>
+          <button class="nav-item" type="button" data-page="grades">
+            <span class="nav-icon" aria-hidden="true"><img src="assets/grades-icon.png" alt="" /></span>
+            <span>학점 관리</span>
+          </button>
+
+          <p class="nav-group-title">학습 관리</p>
+          <button class="nav-item" type="button" data-page="timer">
+            <span class="nav-icon" aria-hidden="true"><img src="assets/timer-icon.png" alt="" /></span>
+            <span>학습 타이머</span>
+          </button>
+          <button class="nav-item" type="button" data-page="analytics">
+            <span class="nav-icon" aria-hidden="true"><img src="assets/analytics-icon.png" alt="" /></span>
+            <span>학습 통계 및 분석</span>
+          </button>
+          <button class="nav-item" type="button" data-page="calendar">
+            <span class="nav-icon" aria-hidden="true"><img src="assets/todo-icon.png" alt="" /></span>
+            <span>할일 관리</span>
+            <span class="nav-count">3</span>
+          </button>
+          <button class="nav-item" type="button" data-page="companion">
+            <span class="nav-icon" aria-hidden="true">✦</span>
+            <span>별이와 대화</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-divider"></div>
+          <nav class="sidebar-shortcuts" aria-label="학교 바로가기">
+            <a class="sidebar-shortcut" href="https://www.seoultech.ac.kr/" target="_blank" rel="noopener noreferrer">
+              <span>학교 홈페이지</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a class="sidebar-shortcut" href="https://suis.seoultech.ac.kr/" target="_blank" rel="noopener noreferrer">
+              <span>통합정보시스템</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </nav>
+          <div class="profile-button">
+            <span class="avatar" id="profile-avatar">S</span>
+            <span class="profile-copy">
+              <strong id="profile-name">ST mate 사용자</strong>
+              <small id="profile-detail">eClass 로그인 전</small>
+            </span>
+            <div class="profile-menu-container">
+              <button id="profile-menu-toggle" class="profile-more" type="button" aria-label="사용자 메뉴" aria-expanded="false" aria-controls="profile-menu">···</button>
+              <div id="profile-menu" class="profile-menu is-hidden">
+                <button id="profile-info-button" class="logout-button" type="button" aria-haspopup="dialog">내 정보</button>
+                <button id="logout-button" class="logout-button" type="button">로그아웃</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <button id="sidebar-toggle" class="icon-button sidebar-toggle" type="button" aria-label="사이드바 숨기기" aria-pressed="false" title="사이드바 숨기기">☰</button>
+
+      <main class="main-area">
+        <header class="topbar">
+          <div>
+            <!-- <p class="breadcrumb">ST mate <span>/</span> Overview</p> -->
+            <!-- <h1 id="page-title">홈</h1> -->
+          </div>
+        </header>
+
+        <div class="dashboard-placeholder">
+          <section class="star-banner home-star-banner" aria-label="별이의 인사">
+            <div class="star-banner-copy sr-only">
+              <p class="section-kicker">WELCOME BACK</p>
+              <h2>왜 이렇게 늦게 왔어~<br />별이가 기다리고 있었잖아!</h2>
+              <p>오늘도 별이와 함께 차근차근 시작해 보자.</p>
+            </div>
+            <div class="star-banner-art-wrap"><img class="star-banner-art" src="assets/star-home-unified.png" alt="" aria-hidden="true" /></div>
+          </section>
+          <section class="content-card home-weekly-card" aria-labelledby="home-week-heading">
+            <div class="home-week-toolbar">
+              <div>
+                <p class="section-kicker">WEEKLY VIEW</p>
+                <h2 id="home-week-heading">주간 일정</h2>
+                <p id="home-week-range"></p>
+              </div>
+              <button class="text-button" id="home-add-todo" type="button">＋ 일정 추가</button>
+            </div>
+            <div class="home-week-calendar-days" data-calendar="home" aria-label="오늘부터 7일 일정"></div>
+          </section>
+
+          <aside class="dashboard-side">
+            <section class="content-card today-todos-card">
+              <div class="card-heading">
+                <div>
+                  <p class="section-kicker">TODAY'S TASKS</p>
+                  <h2>오늘의 할일</h2>
+                </div>
+                <button class="text-button" type="button" data-navigate="calendar">할일 관리 <span>→</span></button>
+              </div>
+              <div class="home-todo-list" id="today-todo-list" role="list" aria-label="오늘의 할일"></div>
+            </section>
+
+            <section class="content-card timetable-card">
+              <div class="card-heading">
+                <div>
+                  <p class="section-kicker">FRIDAY · TODAY</p>
+                  <h2>오늘의 시간표</h2>
+                </div>
+              </div>
+              <div class="empty-state" id="today-courses">
+                <span class="empty-state-icon" aria-hidden="true">◷</span>
+                <strong>아직 등록된 수업이 없어요</strong>
+                <span>eClass에 로그인하면 시간표를 불러올 수 있어요.</span>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <section class="page-view is-hidden" data-view="courses" aria-labelledby="courses-heading">
+          <div class="page-intro">
+            <div>
+              <p class="section-kicker">ACADEMIC MANAGEMENT</p>
+              <h2 id="courses-heading">수강 과목</h2>
+            </div>
+            <button class="primary-button action-button" type="button" data-open-course>
+              <span aria-hidden="true">＋</span> 과목 추가
+            </button>
+          </div>
+          <section class="content-card course-summary">
+            <div class="term-controls">
+              <label>연도
+                <select id="course-year" aria-label="연도 선택"></select>
+              </label>
+              <label>학기
+                <select id="course-term" aria-label="학기 선택"></select>
+              </label>
+            </div>
+            <div class="credit-total"><span>신청 학점</span><strong id="course-credit-total">0<span> 학점</span></strong></div>
+          </section>
+          <section class="content-card course-timetable-card" aria-labelledby="course-timetable-heading">
+            <div class="course-timetable-header">
+              <div>
+                <h3 id="course-timetable-heading">주간 시간표</h3>
+                <p id="course-timetable-caption"> </p>
+              </div>
+            </div>
+            <div class="course-timetable-scroll">
+              <div id="course-timetable" aria-label="월요일부터 일요일까지 주간 수업 시간표"></div>
+            </div>
+          </section>
+          <section class="content-card table-card">
+            <div class="table-heading">
+              <div><h3>과목 목록</h3></div>
+              <span class="table-count" id="course-count">0개 과목</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>과목명</th><th>과목 코드</th><th>담당 교수</th><th>수업 시간</th><th>학점</th><th>관리</th></tr></thead>
+                <tbody id="course-rows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="page-view is-hidden" data-view="grades" aria-labelledby="grades-heading">
+          <div class="page-intro">
+            <div>
+              <p class="section-kicker">ACADEMIC PERFORMANCE</p>
+              <h2 id="grades-heading">학점 관리</h2>
+            </div>
+            <label class="standalone-select">기준 학기
+              <select id="grade-term-select" aria-label="성적 기준 학기"></select>
+            </label>
+          </div>
+          <div class="grade-summary-grid">
+            <article class="content-card metric-card"><span>전체 누적 평점</span><strong id="cumulative-gpa">—<small> / 4.5</small></strong><em class="metric-note">입력된 성적 기준</em></article>
+            <article class="content-card metric-card"><span>이번 학기 평점</span><strong id="semester-gpa">—<small> / 4.5</small></strong><em class="metric-note">성적 입력 후 표시</em></article>
+            <article class="content-card metric-card"><span>총 이수 학점</span><strong id="total-earned-credits">0<small> / 130학점</small></strong><div class="progress-track"><span id="earned-credits-progress"></span></div></article>
+          </div>
+          <section class="content-card table-card">
+            <div class="table-heading">
+              <div><h3>과목별 성적</h3><span>과목별 성적을 입력하면 Firebase에 저장됩니다.</span></div>
+              <span class="term-badge" id="grade-term-badge"></span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>과목명</th><th>학점</th><th>등급</th><th>평점</th><th>공부 시간</th></tr></thead>
+                <tbody id="grade-rows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="page-view is-hidden" data-view="timer" aria-labelledby="timer-heading">
+          <section class="star-banner timer-star-banner" role="img" aria-label="공부 시작하면 깨워줘... 조금만 잘게. 잠자는 별이.">
+            <div class="timer-banner-art-wrap">
+              <img
+                class="star-banner-art"
+                id="timer-mascot-image"
+                src="assets/star-timer-idle.png"
+                data-sleeping-src="assets/star-timer-idle.png"
+                data-studying-src="assets/star-timer-focus.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="timer-banner-edge timer-banner-edge-top" aria-hidden="true"></span>
+              <span class="timer-banner-edge timer-banner-edge-right" aria-hidden="true"></span>
+              <span class="timer-banner-edge timer-banner-edge-bottom" aria-hidden="true"></span>
+              <span class="timer-banner-edge timer-banner-edge-left" aria-hidden="true"></span>
+            </div>
+            <div class="star-banner-copy">
+              <h2 id="timer-mascot-message" aria-live="polite">공부 시작하면 깨워줘... 조금만 잘게.</h2>
+            </div>
+          </section>
+          <section class="timer-panel timer-hero" aria-labelledby="timer-heading">
+            <div class="timer-hero-total">
+              <h2 id="timer-heading">오늘의 공부 시간</h2>
+              <div class="timer-display" id="timer-display" aria-label="오늘의 총 공부 시간">00:00:00</div>
+            </div>
+            <div class="timer-hero-active">
+              <span class="timer-hero-indicator" aria-hidden="true"></span>
+              <div class="timer-hero-course">
+                <div class="timer-status" id="timer-status"><span class="status-pulse"></span><span>준비 중</span></div>
+                <strong id="timer-active-course">과목을 선택해 공부를 시작하세요</strong>
+              </div>
+            </div>
+            <p class="timer-disclaimer" id="timer-disclaimer">허용 목록에 없는 집중 앱을 감지하면 타이머를 일시정지합니다.</p>
+          </section>
+          <section class="content-card timer-courses-card" aria-labelledby="timer-courses-heading">
+            <div class="timer-courses-heading">
+              <h3 id="timer-courses-heading">학습 과목</h3>
+              <button class="secondary-button timer-course-edit-button" type="button" data-open-timer-course-editor>과목 수정</button>
+            </div>
+            <div class="timer-course-list" id="timer-course-list" aria-label="과목별 공부 시간"></div>
+          </section>
+          <div class="timer-bottom-grid">
+            <section class="content-card timer-stats">
+              <div class="card-heading">
+                <div><p class="section-kicker">THIS WEEK</p><h3>이번 주 학습 통계</h3></div>
+                <button class="text-button" type="button" data-navigate="analytics">자세히 보기 <span>→</span></button>
+              </div>
+              <div class="study-chart" id="study-chart" aria-label="요일별 학습 시간"></div>
+              <div class="study-chart-times" id="study-chart-times" aria-label="요일별 공부 시간"></div>
+              <p class="study-chart-summary" id="study-chart-summary">로그인 후 학습 기록을 확인할 수 있어요.</p>
+            </section>
+            <section class="content-card allowed-apps">
+              <div class="card-heading"><div><p class="section-kicker">FOCUS MODE</p><h3>허용 앱 설정</h3></div></div>
+              <p class="subtle-copy">집중 모드에서 사용할 앱을 선택해요.</p>
+              <label class="app-toggle"><span class="app-symbol chrome">C</span><span>Chrome</span><input type="checkbox" value="chrome" data-focus-app checked><i></i></label>
+              <label class="app-toggle"><span class="app-symbol notion">N</span><span>Notion</span><input type="checkbox" value="notion" data-focus-app checked><i></i></label>
+              <label class="app-toggle"><span class="app-symbol discord">D</span><span>Discord</span><input type="checkbox" value="discord" data-focus-app><i></i></label>
+              <label class="app-toggle"><span class="app-symbol steam">S</span><span>Steam</span><input type="checkbox" value="steam" data-focus-app><i></i></label>
+              <p class="toggle-note">선택한 앱은 감지 시 자동 종료하지 않고 타이머만 일시정지합니다.</p>
+            </section>
+          </div>
+        </section>
+
+        <section class="page-view is-hidden companion-view" data-view="companion" aria-labelledby="companion-heading">
+          <section class="star-conversation-hero">
+            <img src="assets/star-conversation-new.png" alt="" aria-hidden="true" />
+            <div class="star-conversation-copy">
+              <p class="section-kicker">STAR MATE</p>
+              <h2 id="companion-heading">별이와 대화</h2>
+              <p>별이와 공부와 일상을 나눠보세요.</p>
+            </div>
+          </section>
+          <div class="star-chat-layout">
+            <section class="content-card star-chat">
+              <div class="star-chat-messages" id="star-chat-messages" aria-live="polite">
+                <div class="star-chat-message star-message">왔구나! 기다리고 있었어. 오늘은 어떤 하루였는지, 지금 무엇을 같이 해보면 좋을지 편하게 이야기해 줘.</div>
+              </div>
+              <form class="star-chat-form" id="star-chat-form">
+                <label class="sr-only" for="star-chat-input">별이에게 메시지 보내기</label>
+                <input id="star-chat-input" type="text" maxlength="2000" autocomplete="off" placeholder="별이에게 오늘 있었던 일을 이야기해 주세요" required />
+                <button class="star-chat-send" id="star-chat-send" type="submit" aria-label="보내기">↑</button>
+              </form>
+            </section>
+            <aside class="star-chat-side">
+              <p class="section-kicker">별이의 추천</p>
+              <h3 class="star-suggest-title">우리 뭐부터 해볼까?</h3>
+              <button class="star-suggestion" type="button" data-star-prompt="오늘의 학습 계획을 과목과 일정을 고려해서 짜줘.">
+                <span class="star-suggestion-num">01</span>
+                <span><strong>오늘의 학습 계획</strong><small>과목과 일정을 조합해 계획 생성</small></span>
+              </button>
+              <button class="star-suggestion" type="button" data-star-prompt="마감일 기준으로 내가 해야 할 일의 우선순위를 정리해줘.">
+                <span class="star-suggestion-num">02</span>
+                <span><strong>일정 우선순위</strong><small>마감일 기준으로 해야 할 일 정리</small></span>
+              </button>
+              <button class="star-suggestion" type="button" data-star-prompt="현재 평점에 맞는 학점 향상 전략을 제안해줘.">
+                <span class="star-suggestion-num">03</span>
+                <span><strong>학점 향상 전략</strong><small>현재 평점에 맞는 학습 전략 제안</small></span>
+              </button>
+            </aside>
+          </div>
+        </section>
+
+        <section class="page-view is-hidden" data-view="analytics" aria-labelledby="analytics-heading">
+          <div class="page-intro">
+            <div>
+              <p class="section-kicker">LEARNING STATISTICS</p>
+              <h2 id="grades-heading">학습 통계 및 분석</h2>
+            </div>
+          </div>
+          <div class="analytics-dashboard">
+            <section class="content-card analytics-summary-card" aria-labelledby="analytics-heading">
+              <div class="analytics-summary-heading">
+                <h2 id="analytics-heading">기간별 학습 통계</h2>
+              </div>
+              <div class="analytics-period-tabs" role="tablist" aria-label="통계 기간">
+                <button class="analytics-period-tab is-active" type="button" role="tab" aria-selected="true" data-analytics-period="week">이번 주</button>
+                <button class="analytics-period-tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-analytics-period="month">이번 달</button>
+                <button class="analytics-period-tab" type="button" role="tab" aria-selected="false" tabindex="-1" data-analytics-period="semester">이번 학기</button>
+              </div>
+              <div class="analytics-metrics">
+                <article class="analytics-metric">
+                  <span>총 공부 시간</span>
+                  <strong id="analytics-total-time">0분</strong>
+                  <p class="analytics-comparison" id="analytics-comparison">비교할 학습 기록이 없습니다.</p>
+                </article>
+                <article class="analytics-metric">
+                  <span>일평균 공부 시간</span>
+                  <strong id="analytics-daily-average">0분</strong>
+                </article>
+                <article class="analytics-metric analytics-streak-metric">
+                  <span>연속 공부 일수</span>
+                  <strong><span id="analytics-study-streak">0일</span></strong>
+                </article>
+              </div>
+            </section>
+            <div class="analytics-chart-stack">
+              <section class="content-card analytics-chart-card">
+                <div class="analytics-chart-heading">
+                  <h3 id="analytics-period-chart-title">주간 공부 시간</h3>
+                  <span id="analytics-period-chart-description">요일별 누적 시간</span>
+                </div>
+                <div class="analytics-bar-chart" id="analytics-period-chart" aria-label="기간별 공부 시간 그래프"></div>
+              </section>
+              <section class="content-card analytics-chart-card">
+                <div class="analytics-chart-heading">
+                  <h3>시간대별 공부 시간</h3>
+                  <span id="analytics-hour-chart-description">시간대별 누적 시간</span>
+                </div>
+                <div class="analytics-bar-chart analytics-hour-chart" id="analytics-hour-chart" aria-label="시간대별 공부 시간 그래프"></div>
+              </section>
+            </div>
+          </div>
+          <section class="content-card analytics-insights" aria-label="상세 분석">
+            <div class="analytics-insight-tabs" role="tablist" aria-label="분석 종류">
+              <button class="analytics-insight-tab is-active" id="analytics-pattern-tab" type="button" role="tab" aria-selected="true" aria-controls="analytics-insight-detail" data-analytics-insight="pattern">
+                <span class="analytics-insight-tab-icon" aria-hidden="true">◷</span>
+                <span>학습 패턴 분석</span>
+                <span class="analytics-insight-tab-arrow" aria-hidden="true">›</span>
+              </button>
+              <button class="analytics-insight-tab" id="analytics-subjects-tab" type="button" role="tab" aria-selected="false" aria-controls="analytics-insight-detail" tabindex="-1" data-analytics-insight="subjects">
+                <span class="analytics-insight-tab-icon" aria-hidden="true">▥</span>
+                <span>과목별 분석</span>
+                <span class="analytics-insight-tab-arrow" aria-hidden="true">›</span>
+              </button>
+              <button class="analytics-insight-tab" id="analytics-advice-tab" type="button" role="tab" aria-selected="false" aria-controls="analytics-insight-detail" tabindex="-1" data-analytics-insight="advice">
+                <span class="analytics-insight-tab-icon" aria-hidden="true">✦</span>
+                <span>별이의 한 마디</span>
+                <span class="analytics-insight-tab-arrow" aria-hidden="true">›</span>
+              </button>
+            </div>
+            <section class="analytics-insight-detail" id="analytics-insight-detail" role="tabpanel" aria-labelledby="analytics-pattern-tab"></section>
+          </section>
+        </section>
+
+        <section class="page-view is-hidden" data-view="calendar" aria-labelledby="calendar-heading">
+          <div class="page-intro">
+            <div>
+              <p class="section-kicker">PLAN YOUR DAYS</p>
+              <h2 id="calendar-heading">할일 관리</h2>
+            </div>
+            <button class="primary-button action-button" type="button" data-open-todo><span aria-hidden="true">＋</span> 일정 추가</button>
+          </div>
+          <div class="calendar-page-grid">
+            <section class="content-card full-calendar-card">
+              <div class="month-toolbar">
+                <div><p class="section-kicker">MONTHLY VIEW</p><h3 data-calendar-month-label></h3></div>
+                <div class="month-actions">
+                  <button class="month-button" type="button" data-month-shift="-1" aria-label="이전 달">‹</button>
+                  <button class="today-button" type="button" data-month-today>오늘</button>
+                  <button class="month-button" type="button" data-month-shift="1" aria-label="다음 달">›</button>
+                </div>
+              </div>
+              <div class="calendar-weekdays full-weekdays">
+                <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+              </div>
+              <div class="full-calendar-days" data-calendar="full"></div>
+            </section>
+            <aside class="content-card agenda-card">
+              <div class="agenda-date"><p class="section-kicker">SELECTED DATE</p><h3 id="selected-date-label"></h3></div>
+              <div class="agenda-list" id="agenda-list"></div>
+              <button class="secondary-button agenda-add" type="button" data-open-todo>＋ 할 일 추가</button>
+            </aside>
+          </div>
+          <section class="content-card remaining-todos-card">
+            <div class="table-heading">
+              <div><h3>남은 할 일</h3></div>
+              <span class="table-count" id="remaining-todo-count">0개</span>
+            </div>
+            <div class="table-scroll">
+              <table class="remaining-todos-table">
+                <thead><tr><th>할 일</th><th>과목 / 유형</th><th>마감일</th><th>상태</th><th>관리</th></tr></thead>
+                <tbody id="remaining-todo-rows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog id="profile-dialog" class="app-dialog profile-dialog" aria-labelledby="profile-dialog-title">
+      <section class="profile-dialog-content">
+        <div class="dialog-heading">
+          <div><p class="section-kicker">MY PROFILE</p><h2 id="profile-dialog-title">내 정보</h2></div>
+          <button class="dialog-close" type="button" data-close-dialog="profile-dialog" aria-label="닫기">×</button>
+        </div>
+        <div class="profile-dialog-summary">
+          <span class="profile-dialog-avatar" id="profile-dialog-avatar" aria-hidden="true">S</span>
+          <div>
+            <strong id="profile-info-name">정보 없음</strong>
+            <small id="profile-info-id"></small>
+          </div>
+        </div>
+        <dl class="profile-info-list">
+          <div><dt>학과</dt><dd id="profile-info-major"></dd></div>
+          <div><dt>학년</dt><dd id="profile-info-grade"></dd></div>
+          <div><dt>전화번호</dt><dd id="profile-info-phone"></dd></div>
+          <div><dt>이메일</dt><dd id="profile-info-email"></dd></div>
+        </dl>
+      </section>
+    </dialog>
+    <dialog id="course-dialog" class="app-dialog">
+      <form id="course-form" class="dialog-form" novalidate>
+        <div class="dialog-heading">
+          <div><p class="section-kicker">YOUR COURSE</p><h2 id="course-dialog-title">과목 추가</h2></div>
+          <button class="dialog-close" type="button" data-close-dialog="course-dialog" aria-label="닫기">×</button>
+        </div>
+        <label for="course-title">과목명</label>
+        <input id="course-title" maxlength="120" required placeholder="예: 자료구조" />
+        <label for="course-code">과목 코드 <span>선택</span></label>
+        <input id="course-code" maxlength="40" placeholder="예: CS201" />
+        <label for="course-professor">담당 교수 <span>선택</span></label>
+        <input id="course-professor" maxlength="80" placeholder="교수명" />
+        <div class="course-time-heading">
+          <span>수업 시간 <small>요일과 교시를 선택해 주세요</small></span>
+          <button class="secondary-button time-add-button" type="button" data-add-course-time>＋ 시간 추가</button>
+        </div>
+        <div id="course-time-list" class="course-time-list"></div>
+        <label for="course-credits">학점</label>
+        <input id="course-credits" type="number" min="1" max="30" step="1" value="3" required />
+        <p id="course-form-error" class="dialog-error" role="status"></p>
+        <div class="dialog-actions">
+          <button class="secondary-button" type="button" data-close-dialog="course-dialog">취소</button>
+          <button class="primary-button action-button" type="submit">추가</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="timer-course-dialog" class="app-dialog timer-course-dialog" aria-labelledby="timer-course-dialog-title">
+      <section class="timer-course-editor">
+        <div class="dialog-heading">
+          <div><p class="section-kicker">EDIT STUDY SUBJECTS</p><h2 id="timer-course-dialog-title">학습 과목 수정</h2></div>
+          <button class="dialog-close" type="button" data-close-dialog="timer-course-dialog" aria-label="닫기">×</button>
+        </div>
+        <div class="timer-course-editor-lists">
+          <section class="timer-course-editor-section" aria-labelledby="visible-timer-courses-heading">
+            <div class="timer-course-editor-section-heading">
+              <h3 id="visible-timer-courses-heading">표시 과목</h3>
+              <span id="visible-timer-course-count">0개</span>
+            </div>
+            <div id="visible-timer-courses" class="timer-course-editor-list" role="list"></div>
+          </section>
+          <section class="timer-course-editor-section" aria-labelledby="hidden-timer-courses-heading">
+            <div class="timer-course-editor-section-heading">
+              <h3 id="hidden-timer-courses-heading">숨김 과목</h3>
+              <span id="hidden-timer-course-count">0개</span>
+            </div>
+            <div id="hidden-timer-courses" class="timer-course-editor-list" role="list"></div>
+          </section>
+        </div>
+        <form id="timer-course-add-form" class="timer-course-add-form">
+          <div class="timer-course-add-heading">
+            <h3>과목 수정</h3>
+            <label for="timer-course-new-title">과목명</label>
+          </div>
+          <div class="timer-course-add-row">
+            <input id="timer-course-new-title" type="text" maxlength="120" placeholder="추가할 과목명을 입력해 주세요" required>
+            <button class="primary-button" type="submit">추가하기</button>
+          </div>
+          <p id="timer-course-editor-error" class="dialog-error" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </dialog>
+    <dialog id="todo-dialog" class="app-dialog">
+      <form id="todo-form" class="dialog-form">
+        <div class="dialog-heading">
+          <div><p class="section-kicker">YOUR PLAN</p><h2 id="todo-dialog-title">일정 추가</h2></div>
+          <button class="dialog-close" type="button" data-close-dialog="todo-dialog" aria-label="닫기">×</button>
+        </div>
+        <label for="todo-title">제목</label>
+        <input id="todo-title" name="title" maxlength="120" required placeholder="예: 자료구조 과제 제출" />
+        <label for="todo-date-start">날짜</label>
+        <div class="todo-date-range">
+          <input id="todo-date-start" name="dateStart" type="date" required />
+          <span aria-hidden="true">~</span>
+          <input id="todo-date-end" name="dateEnd" type="date" />
+        </div>
+        <small class="field-help">종료 날짜를 비워두면 선택한 하루에만 등록됩니다.</small>
+        <label for="todo-note">메모 <span>선택</span></label>
+        <textarea id="todo-note" name="note" maxlength="300" rows="3" placeholder="간단한 메모를 남겨 보세요."></textarea>
+        <p id="todo-form-error" class="dialog-error" role="status"></p>
+        <div class="dialog-actions">
+          <button class="secondary-button" type="button" data-close-dialog="todo-dialog">취소</button>
+          <button class="primary-button action-button" type="submit">저장</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="chat-dialog" class="chat-dialog">
+      <section class="chat-panel" aria-labelledby="chat-title">
+        <header class="chat-header">
+          <div class="chat-avatar" aria-hidden="true">✦</div>
+          <div><h2 id="chat-title">ST mate AI</h2><p>학습과 일정 계획을 도와드려요</p></div>
+          <button class="dialog-close" type="button" data-close-dialog="chat-dialog" aria-label="닫기">×</button>
+        </header>
+        <div class="chat-messages" id="chat-messages" aria-live="polite">
+          <div class="chat-message assistant-message">안녕하세요! 공부 계획이나 학습 방법에 관해 무엇이든 물어보세요.</div>
+        </div>
+        <form id="chat-form" class="chat-compose">
+          <label class="sr-only" for="chat-input">AI에게 질문</label>
+          <textarea id="chat-input" rows="1" maxlength="4000" placeholder="질문을 입력해 주세요..." required></textarea>
+          <button class="primary-button chat-send" id="chat-send" type="submit" aria-label="질문 보내기">↑</button>
+        </form>
+        <p class="chat-disclaimer" id="chat-disclaimer">AI 답변은 참고용이며 중요한 정보는 확인이 필요합니다.</p>
+      </section>
+    </dialog>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="calendar.js"></script>
+    <script src="courses.js"></script>
+    <script src="timer.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
