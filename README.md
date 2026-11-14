@@ -4,6 +4,8 @@ ST mate는 서울과학기술대학교 학생을 위한 학습 플래너입니�
 
 [시연 영상](https://youtu.be/wNtl2eOa6Xc?si=mGrE9HJR88Tgr-Wl)
 
+[발표자료](발표자료.pdf)
+
 ## 주요 기능
 
 - eClass 학사 정보와 개인 학습 기록을 결합한 학습 플래너
