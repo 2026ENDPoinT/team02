@@ -93,47 +93,6 @@ GEMINI_MODEL=gemini-3.6-flash
 
 서비스 계정 JSON은 데이터베이스에 대한 관리자 권한을 가질 수 있는 민감한 비밀 파일입니다. GitHub에 올리거나 다른 사람과 공유하지 마세요. `.env`와 서비스 계정 JSON은 `.gitignore`에 등록되어 있습니다.
 
-## GitHub에 업로드하기
-
-### 1. GitHub 저장소 만들기
-
-GitHub에서 새 저장소를 만들고 저장소 이름을 정합니다. 로컬 프로젝트에 이미 파일이 있으므로 GitHub에서 README나 `.gitignore`를 자동 생성하지 않는 빈 저장소로 만드는 것이 간단합니다.
-
-### 2. 프로젝트 폴더에서 Git 초기화 및 커밋
-
-아래 명령을 프로젝트 루트(`README.md`와 `main.py`가 있는 폴더)에서 실행합니다.
-
-```powershell
-git init
-git add .
-git status
-```
-
-`git status` 결과에 `.env` 또는 Firebase 서비스 계정 JSON이 올라와 있지 않은지 확인하세요. 확인 후 첫 커밋을 만듭니다.
-
-```powershell
-git commit -m "Initial project upload"
-git branch -M main
-```
-
-### 3. GitHub 저장소 연결 및 업로드
-
-`<GitHub-사용자명>`과 `<저장소명>`을 실제 값으로 바꿔 실행합니다.
-
-```powershell
-git remote add origin https://github.com/<GitHub-사용자명>/<저장소명>.git
-git push -u origin main
-```
-
-이후 변경 사항은 다음과 같이 올릴 수 있습니다.
-
-```powershell
-git add .
-git commit -m "변경 내용 요약"
-git push
-```
-
-이미 비밀 키가 GitHub에 업로드된 적이 있다면 파일을 삭제하는 것만으로는 충분하지 않습니다. 해당 키를 즉시 폐기·재발급하고, Git 기록에서도 노출된 키를 제거하세요.
 
 ## 의존성
 
