@@ -2,6 +2,8 @@
 
 ST mate는 서울과학기술대학교 학생을 위한 학습 플래너입니다. 수강 과목과 일정을 관리하고, 과목별 학습 시간을 기록하며, Gemini 기반 AI 친구 "별이"와 대화할 수 있습니다.
 
+[시연 영상]([https://example.com](https://youtu.be/wNtl2eOa6Xc?si=mGrE9HJR88Tgr-Wl))
+
 ## 주요 기능
 
 - eClass 학사 정보와 개인 학습 기록을 결합한 학습 플래너
